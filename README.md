@@ -46,6 +46,34 @@ mosquitto_pub -h <domain> -p 8883 -u <username> -P <password> -t test -m "Hello 
 Note that connections must be carried out over TLS, so we use the domain name (instead of an IP address)
 and specify port `8883` (instead of the default `1883`).
 
+The MQTT broker can also receive connections via WebSockets over TLS (WSS).
+Example code using the [MQTT.js](https://github.com/mqttjs/MQTT.js) client library is given below:
+
+```
+const client = mqtt.connect(`wss://${MQTT_HOST}:9001`, {
+  username: MQTT_USERNAME,
+  password: MQTT_PASSWORD,
+});
+
+const topics = ['test', 'helloworld'];
+client.on('connect', () => {
+  console.log('Connected');
+  client.subscribe(topics, (err, granted) => {
+    console.log(`Subscribed to topic(s) '${granted.map((grant) => grant.topic).join("', '")}'`);
+
+    client.publish('test', 'This works!', {}, (err) => {
+      if (err) {
+        console.error('Failed to publish message', err);
+      }
+    });
+  });
+});
+
+client.on('message', (topic, message, packet) => {
+  console.log(`[${topic}] Received Message:`, message.toString(), packet);
+});
+```
+
 ## References \& Links
 
 - [Setting up a secure MQTT broker (without Docker)](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-the-mosquitto-mqtt-messaging-broker-on-ubuntu-18-04)
