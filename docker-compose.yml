@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  broker:
+    container_name: locksense-broker
+    image: eclipse-mosquitto
+    ports:
+      - 1883:1883
+      - 8883:8883
+      - 9001:9001
+    volumes:
+      - ./mqtt-broker/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./mqtt-broker/passwd:/etc/mosquitto/passwd
+      - /mosquitto/certs:/mosquitto/certs
+      - /mosquitto/data:/mosquitto/data
+      - /mosquitto/log:/mosquitto/log
