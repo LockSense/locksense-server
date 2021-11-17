@@ -1,2 +1,8 @@
 # Ignore sensitive files
 passwd
+
+# Ignore data
+/**/images/*
+
+# Don't ignore any directory with .gitkeep
+!/**/.gitkeep
