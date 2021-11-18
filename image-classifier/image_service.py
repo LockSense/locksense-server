@@ -63,7 +63,7 @@ def on_message(client, userdata, msg):
     img = Image.fromarray(img_data)
     img.save('%s/%s' % (SAVED_IMAGE_DIR, filename))
 
-    img_data = np.expand_dims(img_data, axis=0)
+    img_data = np.expand_dims(img_data, axis=0) / 255
     result = classify(filename, img_data)
 
     print("Sending result: ", result)
