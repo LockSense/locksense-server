@@ -3,7 +3,7 @@ version: '3.7'
 services:
   broker:
     container_name: locksense-broker
-    image: eclipse-mosquitto
+    image: eclipse-mosquitto:2.0.12
     ports:
       - 1883:1883
       - 8883:8883
@@ -14,4 +14,17 @@ services:
       - /mosquitto/certs:/mosquitto/certs
       - /mosquitto/data:/mosquitto/data
       - /mosquitto/log:/mosquitto/log
+
+  image-storage:
+    container_name: image-storage
+    build:
+      context: .
+      dockerfile: ./Dockerfile-photos
+    volumes:
+      - ./storage/images:/images
+      - ./storage/image_storage.py:/image_storage.py
+    environment:
+      - MQTT_USERNAME=MQTT_USERNAME
+      - MQTT_PASSWORD=MQTT_PASSWORD
+    command: python3 image_storage.py -u "$MQTT_USERNAME" -p "$MQTT_PASSWORD"
 
