@@ -1,2 +1,7 @@
 # Ignore sensitive files
 passwd
+.env
+
+# Ignore data directories
+/storage/images
+
